@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.api.model
+package com.adyen.android.assignment.data.remote.model
 
 data class Category(
     val icon: Icon,
