@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
 }
 
 if (!file("local.gradle").exists()) {
@@ -32,6 +31,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions{
+        kotlinCompilerExtensionVersion = "1.1.1"
     }
 }
 
@@ -81,6 +89,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
+    // splash api
+    implementation "androidx.core:core-splashscreen:1.0.0-beta02"
+
     // timber - log library
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
@@ -100,4 +111,8 @@ dependencies {
     // coroutines test scope
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
 
+}
+
+kapt {
+    correctErrorTypes = true
 }
