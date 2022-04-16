@@ -19,7 +19,7 @@
             android:value="AIzaSyD_-cwlXX7BjiwBoW4qj1IiFPjRaDtZaYI" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
