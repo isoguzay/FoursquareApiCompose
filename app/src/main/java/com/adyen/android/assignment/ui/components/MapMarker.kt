@@ -14,8 +14,8 @@ import com.google.maps.android.compose.Marker
 fun MapMarker(
     context: Context,
     position: LatLng,
-    title: String,
-    snippet: String,
+    title: String?,
+    snippet: String?,
     rotation: Float? = null,
     @DrawableRes iconResourceId: Int
 ) {
@@ -24,10 +24,10 @@ fun MapMarker(
     )
     Marker(
         position = position,
-        title = title,
-        snippet = snippet,
+        title = title ?: "",
+        snippet = snippet ?: "",
         icon = icon,
-        rotation = rotation ?: 0F,
+        rotation = rotation ?: 0F
     )
 }
 

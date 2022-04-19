@@ -1,10 +1,8 @@
 package com.adyen.android.assignment
 
-import com.adyen.android.assignment.network.service.PlacesService
 import com.adyen.android.assignment.network.querybuilder.VenueRecommendationsQueryBuilder
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import com.adyen.android.assignment.network.service.PlacesService
+import org.junit.Assert.*
 import org.junit.Test
 
 class PlacesUnitTest {

@@ -3,6 +3,10 @@
     package="com.adyen.android.assignment">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <application
         android:name=".AdyenApplication"
@@ -19,7 +23,7 @@
             android:value="AIzaSyD_-cwlXX7BjiwBoW4qj1IiFPjRaDtZaYI" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
