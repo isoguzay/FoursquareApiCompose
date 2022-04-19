@@ -1,8 +1,10 @@
 package com.adyen.android.assignment.utils
 
 import android.content.res.Resources
+import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.model.response.*
 import com.adyen.android.assignment.network.util.NetworkResult
+import com.google.android.gms.maps.model.LatLng
 
 object FakeDataTest {
 
@@ -78,15 +80,51 @@ object FakeDataTest {
         )
     )
 
-    fun getPlacesFromServiceFakeResponse(): NetworkResult<PlacesResponse> {
+    fun getSelectedPlace() = Result(
+        categories = listOf(Category(icon = null, id = 0, name = "")),
+        chains = null,
+        distance = 5,
+        geocodes = Geocodes(
+            main = Main(latitude = 52.376898, longitude = 4.904513),
+            roof = null
+        ),
+        location = Location(
+            address = "Oosterdoksstraat 4",
+            country = "NL",
+            cross_street = null,
+            formatted_address = "Oosterdoksstraat 4 (Double Tree by Hilton), 1001 RD Amsterdam",
+            postcode = "1001 RD",
+            locality = null,
+            neighborhood = null,
+            region = null
+        ),
+        name = "Starbucks",
+        related_places = null,
+        timezone = "North Holland",
+        fsq_id = "50056329e4b0c7e958812543"
+    )
+
+    fun getPlacesFromServiceFakeResponse(requestModel: LocationRequestModel): NetworkResult<PlacesResponse> {
         return NetworkResult.Success(PlacesResponse(getFakePlacesList()))
     }
 
-    fun getFakeFailureExceptionResponse(): NetworkResult<PlacesResponse> {
+    fun getFakeFailureExceptionResponse(requestModel: LocationRequestModel): NetworkResult<PlacesResponse> {
         return NetworkResult.Failure(
             404, Resources.NotFoundException()
         )
     }
+
+    fun getDummyAmsterdamLocation(): LatLng {
+        return LatLng(Constant.DUMMY_LOCATION_LAT, Constant.DUMMY_LOCATION_LON)
+    }
+
+    fun getDummyLocationRequest(): LocationRequestModel {
+        return LocationRequestModel(
+            latitude = Constant.DUMMY_LOCATION_LAT,
+            longitude = Constant.DUMMY_LOCATION_LON
+        )
+    }
+
 }
 
 
