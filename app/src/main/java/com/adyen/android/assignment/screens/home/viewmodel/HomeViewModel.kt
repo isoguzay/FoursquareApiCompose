@@ -27,16 +27,28 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
     val selectedPlace: LiveData<Result>
         get() = mSelectedPlace
 
+    private val mCurrentLocation = MutableLiveData<LocationRequestModel>()
+    val currentLocation: LiveData<LocationRequestModel>
+        get() = mCurrentLocation
+
     fun getPlaces(requestModel: LocationRequestModel) = viewModelScope.launch {
         mGetPlaces.value = placesRepository.getPlaces(requestModel = requestModel)
     }
 
-    fun getDummyAmsterdamLocation(): LatLng {
-        return LatLng(Constant.DUMMY_LOCATION_LAT, Constant.DUMMY_LOCATION_LON)
-    }
-
     fun setSelectedPlace(place: Result) {
         mSelectedPlace.value = place
+    }
+
+    fun getUserCurrentLocation(): LatLng {
+        return LatLng(currentLocation.value?.latitude!!, currentLocation.value?.longitude!!)
+    }
+
+    fun setCurrentLocation(locationRequestModel: LocationRequestModel) {
+        mCurrentLocation.value = locationRequestModel
+    }
+
+    fun getDummyAmsterdamLocation(): LatLng {
+        return LatLng(Constant.DUMMY_LOCATION_LAT, Constant.DUMMY_LOCATION_LON)
     }
 
     fun getDummyLocationRequest(): LocationRequestModel {

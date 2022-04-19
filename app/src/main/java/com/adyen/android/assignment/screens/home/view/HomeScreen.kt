@@ -1,5 +1,7 @@
 package com.adyen.android.assignment.screens.home.view
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -22,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.adyen.android.assignment.R
+import com.adyen.android.assignment.model.response.Category
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
 import com.adyen.android.assignment.screens.home.viewmodel.HomeViewModel
+import com.adyen.android.assignment.screens.permission.screen.LocationPermissionScreen
+import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
 import com.adyen.android.assignment.utils.Constant.GOOGLE_MAPS_CAMERA_ZOOM
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -33,18 +38,34 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import timber.log.Timber
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    locationRequestOnClick: () -> Unit,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    permissionViewModel: PermissionViewModel = hiltViewModel()
+) {
 
     val placesStatesList = mutableListOf<Result>()
     val showInfo = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        homeViewModel.getPlaces(homeViewModel.getDummyLocationRequest())
-    }
-
     val placesState = homeViewModel.places.observeAsState()
     val selectedPlaceState = homeViewModel.selectedPlace.observeAsState()
+    val permissionsState = permissionViewModel.locationPermission.observeAsState()
+    val currentLocation = homeViewModel.currentLocation.observeAsState()
+    val cameraPositionState = rememberCameraPositionState {}
+
+    if (permissionsState.value == true) {
+        LaunchedEffect(Unit) {
+            homeViewModel.getPlaces(homeViewModel.getDummyLocationRequest())
+            cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                homeViewModel.getDummyAmsterdamLocation(),
+                GOOGLE_MAPS_CAMERA_ZOOM
+            )
+        }
+    } else {
+        LocationPermissionScreen()
+    }
 
     when (val placesResponse = placesState.value) {
         is NetworkResult.Success -> {
@@ -60,33 +81,55 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
         else -> {}
     }
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(
-            homeViewModel.getDummyAmsterdamLocation(),
-            GOOGLE_MAPS_CAMERA_ZOOM
-        )
-    }
-
     if (placesStatesList.isNotEmpty()) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
             placesStatesList.forEach { place ->
-                Marker(
-                    position = LatLng(
-                        place.geocodes?.main?.latitude!!,
-                        place.geocodes?.main?.longitude!!
-                    ),
-                    title = place.name,
-                    snippet = place.location?.address,
-                    onClick = {
-                        homeViewModel.setSelectedPlace(place)
-                        false
-                    }
-                )
+                place.geocodes?.main?.let { main ->
+                    Marker(
+                        position = LatLng(
+                            main.latitude!!,
+                            main.longitude!!
+                        ),
+                        title = place.name,
+                        snippet = place.location?.address,
+                        onClick = {
+                            homeViewModel.setSelectedPlace(place)
+                            false
+                        }
+                    )
+                }
             }
         }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Button(modifier = Modifier
+                .wrapContentSize(),
+                onClick = {
+                    locationRequestOnClick()
+                }) {
+                Icon(
+                    Icons.Default.Place,
+                    contentDescription = "Show My Location"
+                )
+                Text(text = "My Location")
+            }
+        }
+    }
+
+    if (currentLocation.value != null) {
+        homeViewModel.getPlaces(currentLocation.value!!)
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            homeViewModel.getUserCurrentLocation(),
+            GOOGLE_MAPS_CAMERA_ZOOM
+        )
     }
 
     if (selectedPlaceState.value != null) {
@@ -96,6 +139,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
             SelectedPlaceInfo(showInfo, place)
         }
     }
+
 }
 
 @Composable
@@ -134,7 +178,7 @@ fun SelectedPlaceInfo(showInfo: MutableState<Boolean>, place: Result) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row(Modifier.weight(3F)) {
-                                SelectedPlaceNameField(place = place)
+                                SelectedPlaceNameField(name = place.name)
                             }
                             Row(Modifier.weight(1F)) {
                                 IconButton(onClick = { expanded = !expanded }) {
@@ -152,15 +196,10 @@ fun SelectedPlaceInfo(showInfo: MutableState<Boolean>, place: Result) {
                             }
                         }
                         if (expanded) {
-                            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                SelectedPlaceAddressField(place = place)
-                            }
-                            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
-                            SelectedPlaceCategoriesField(place = place)
+                            SelectedPlaceAddressField(formatted_address = place.location?.formatted_address)
+                            SelectedPlaceCategoriesField(categoryList = place.categories)
                         }
                     }
-
                 }
             }
         }
@@ -168,31 +207,33 @@ fun SelectedPlaceInfo(showInfo: MutableState<Boolean>, place: Result) {
 }
 
 @Composable
-fun SelectedPlaceNameField(place: Result) {
+fun SelectedPlaceNameField(name: String?) {
+    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
     Icon(
         Icons.Default.Business,
         contentDescription = ""
     )
     Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
-    Text(text = "Name : ${place.name}")
+    Text(text = "Name : $name")
 }
 
 @Composable
-fun SelectedPlaceAddressField(place: Result) {
-    if (!place.location?.formatted_address.isNullOrEmpty()) {
-        Icon(
-            Icons.Default.Place,
-            contentDescription = ""
-        )
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
-        place.location?.formatted_address?.let { formatted_address ->
+fun SelectedPlaceAddressField(formatted_address: String?) {
+    if (!formatted_address.isNullOrEmpty()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Icon(
+                Icons.Default.Place,
+                contentDescription = ""
+            )
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
             Text(text = "Address : $formatted_address")
         }
     }
 }
 
 @Composable
-fun SelectedPlaceCategoriesField(place: Result) {
+fun SelectedPlaceCategoriesField(categoryList: List<Category>?) {
+    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
     Column {
         Row(modifier = Modifier.fillMaxWidth()) {
             Icon(
@@ -206,7 +247,7 @@ fun SelectedPlaceCategoriesField(place: Result) {
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
-        place.categories?.let { categories ->
+        categoryList?.let { categories ->
             LazyRow(modifier = Modifier.fillMaxWidth()) {
                 items(count = categories.size, itemContent = { index ->
                     if (!categories[index].name.isNullOrEmpty()) {
@@ -248,3 +289,7 @@ fun CategoryChip(
         )
     }
 }
+
+
+
+
