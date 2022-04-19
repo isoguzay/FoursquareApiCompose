@@ -26,7 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.adyen.android.assignment.R
 import com.adyen.android.assignment.model.response.Category
 import com.adyen.android.assignment.model.response.Result
-import com.adyen.android.assignment.network.util.NetworkResult
 import com.adyen.android.assignment.screens.home.viewmodel.HomeViewModel
 import com.adyen.android.assignment.screens.permission.screen.LocationPermissionScreen
 import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
@@ -36,7 +35,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
-import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -45,11 +43,10 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     permissionViewModel: PermissionViewModel = hiltViewModel()
 ) {
+    val venuesListState = homeViewModel.venuesListState
 
-    val placesStatesList = mutableListOf<Result>()
+    val showProgress = remember { mutableStateOf(false) }
     val showInfo = remember { mutableStateOf(false) }
-
-    val placesState = homeViewModel.places.observeAsState()
     val selectedPlaceState = homeViewModel.selectedPlace.observeAsState()
     val permissionsState = permissionViewModel.locationPermission.observeAsState()
     val currentLocation = homeViewModel.currentLocation.observeAsState()
@@ -67,26 +64,12 @@ fun HomeScreen(
         LocationPermissionScreen()
     }
 
-    when (val placesResponse = placesState.value) {
-        is NetworkResult.Success -> {
-            placesResponse.data?.results?.forEach { result ->
-                placesStatesList.add(result)
-            }
-        }
-        is NetworkResult.Failure -> {
-            placesResponse.apply {
-                Timber.e("$statusCode")
-            }
-        }
-        else -> {}
-    }
-
-    if (placesStatesList.isNotEmpty()) {
+    if (venuesListState.venueList?.isNotEmpty() == true) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
-            placesStatesList.forEach { place ->
+            venuesListState.venueList.forEach { place ->
                 place.geocodes?.main?.let { main ->
                     Marker(
                         position = LatLng(
@@ -103,7 +86,6 @@ fun HomeScreen(
                 }
             }
         }
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,6 +95,7 @@ fun HomeScreen(
             Button(modifier = Modifier
                 .wrapContentSize(),
                 onClick = {
+                    showProgress.value = true
                     locationRequestOnClick()
                 }) {
                 Icon(
@@ -123,6 +106,19 @@ fun HomeScreen(
             }
         }
     }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (venuesListState.isLoading) {
+            CircularProgressIndicator()
+        } else if (venuesListState.error != null) {
+            Text(
+                text = venuesListState.error,
+                color = MaterialTheme.colors.error
+            )
+        }
+    }
 
     if (currentLocation.value != null) {
         homeViewModel.getPlaces(currentLocation.value!!)
@@ -130,6 +126,17 @@ fun HomeScreen(
             homeViewModel.getUserCurrentLocation(),
             GOOGLE_MAPS_CAMERA_ZOOM
         )
+        showProgress.value = false
+        homeViewModel.setCurrentLocationEmpty()
+    }
+
+    if (showProgress.value) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 
     if (selectedPlaceState.value != null) {
