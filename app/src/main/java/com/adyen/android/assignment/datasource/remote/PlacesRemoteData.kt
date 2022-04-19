@@ -1,6 +1,6 @@
 package com.adyen.android.assignment.datasource.remote
 
-import com.adyen.android.assignment.model.response.PlacesReponse
+import com.adyen.android.assignment.model.response.PlacesResponse
 import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.network.querybuilder.VenueRecommendationsQueryBuilder
 import com.adyen.android.assignment.network.service.PlacesService
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class PlacesRemoteData @Inject constructor(private val remoteService: PlacesService) {
 
-    suspend fun getPlaces(requestModel: LocationRequestModel): NetworkResult<PlacesReponse> {
+    suspend fun getPlaces(requestModel: LocationRequestModel): NetworkResult<PlacesResponse> {
         return remoteService.getVenueRecommendationPlaces(
             VenueRecommendationsQueryBuilder()
                 .setLatitudeLongitude(

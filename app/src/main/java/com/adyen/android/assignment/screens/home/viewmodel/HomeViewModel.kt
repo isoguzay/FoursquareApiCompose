@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adyen.android.assignment.model.request.LocationRequestModel
-import com.adyen.android.assignment.model.response.PlacesReponse
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
 import com.adyen.android.assignment.repository.remote.PlacesRepository
