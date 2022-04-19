@@ -31,6 +31,10 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
     val currentLocation: LiveData<LocationRequestModel?>
         get() = mCurrentLocation
 
+    /**
+     * Get places
+     * @param requestModel
+     */
     fun getPlaces(requestModel: LocationRequestModel) = viewModelScope.launch {
         venuesListState = venuesListState.copy(isLoading = true)
         when (val placesResponse = placesRepository.getPlaces(requestModel = requestModel)) {
@@ -54,26 +58,48 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
         }
     }
 
+    /**
+     * Set selected place
+     * @param place
+     */
     fun setSelectedPlace(place: Result) {
         mSelectedPlace.value = place
     }
 
+    /**
+     * Get user current location
+     */
     fun getUserCurrentLocation(): LatLng {
         return LatLng(currentLocation.value?.latitude!!, currentLocation.value?.longitude!!)
     }
 
+    /**
+     * Set user current location
+     * @param locationRequestModel
+     */
     fun setCurrentLocation(locationRequestModel: LocationRequestModel) {
         mCurrentLocation.value = locationRequestModel
     }
 
+    /**
+     * Set user current location to empty prevent current location confusion
+     */
     fun setCurrentLocationEmpty() {
         mCurrentLocation.value = null
     }
 
+    /**
+     * Get dummy data for Adyen Amsterdam location
+     * return LatLng
+     */
     fun getDummyAmsterdamLocation(): LatLng {
         return LatLng(Constant.DUMMY_LOCATION_LAT, Constant.DUMMY_LOCATION_LON)
     }
 
+    /**
+     * Get dummy data for Adyen Amsterdam location
+     * return LocationRequestModel
+     */
     fun getDummyLocationRequest(): LocationRequestModel {
         return LocationRequestModel(
             latitude = Constant.DUMMY_LOCATION_LAT,
