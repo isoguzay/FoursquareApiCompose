@@ -10,7 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.QueryMap
 
-
 interface PlacesService {
     /**
      * Get venue recommendations.
