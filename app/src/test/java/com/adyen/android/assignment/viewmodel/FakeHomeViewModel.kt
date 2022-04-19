@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.screens.home.viewmodel
+package com.adyen.android.assignment.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,15 +10,14 @@ import androidx.lifecycle.viewModelScope
 import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
-import com.adyen.android.assignment.repository.remote.PlacesRepository
-import com.adyen.android.assignment.utils.Constant
-import com.google.android.gms.maps.model.LatLng
+import com.adyen.android.assignment.repository.FakePlacesRepository
+import com.adyen.android.assignment.screens.home.viewmodel.VenuesListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepository) :
+class FakeHomeViewModel @Inject constructor(private val fakePlacesRepository: FakePlacesRepository) :
     ViewModel() {
 
     var venuesListState by mutableStateOf(VenuesListState())
@@ -33,7 +32,8 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
 
     fun getPlaces(requestModel: LocationRequestModel) = viewModelScope.launch {
         venuesListState = venuesListState.copy(isLoading = true)
-        when (val placesResponse = placesRepository.getPlaces(requestModel = requestModel)) {
+        when (val placesResponse =
+            fakePlacesRepository.getPlacesOnLocation(requestModel = requestModel)) {
             is NetworkResult.Success -> {
                 placesResponse.data?.results?.let { venueList ->
                     venuesListState = venuesListState.copy(
@@ -58,27 +58,8 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
         mSelectedPlace.value = place
     }
 
-    fun getUserCurrentLocation(): LatLng {
-        return LatLng(currentLocation.value?.latitude!!, currentLocation.value?.longitude!!)
-    }
-
     fun setCurrentLocation(locationRequestModel: LocationRequestModel) {
         mCurrentLocation.value = locationRequestModel
-    }
-
-    fun setCurrentLocationEmpty() {
-        mCurrentLocation.value = null
-    }
-
-    fun getDummyAmsterdamLocation(): LatLng {
-        return LatLng(Constant.DUMMY_LOCATION_LAT, Constant.DUMMY_LOCATION_LON)
-    }
-
-    fun getDummyLocationRequest(): LocationRequestModel {
-        return LocationRequestModel(
-            latitude = Constant.DUMMY_LOCATION_LAT,
-            longitude = Constant.DUMMY_LOCATION_LON
-        )
     }
 
 }

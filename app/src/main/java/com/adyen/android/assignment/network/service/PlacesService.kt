@@ -1,7 +1,7 @@
 package com.adyen.android.assignment.network.service
 
 import com.adyen.android.assignment.BuildConfig
-import com.adyen.android.assignment.model.response.PlacesReponse
+import com.adyen.android.assignment.model.response.PlacesResponse
 import com.adyen.android.assignment.network.util.NetworkResult
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -18,7 +18,7 @@ interface PlacesService {
      */
     @Headers("Authorization: ${BuildConfig.API_KEY}")
     @GET("places/nearby")
-    fun getVenueRecommendations(@QueryMap query: Map<String, String>): Call<PlacesReponse>
+    fun getVenueRecommendations(@QueryMap query: Map<String, String>): Call<PlacesResponse>
 
     /**
      * Get venue recommendations.
@@ -27,7 +27,7 @@ interface PlacesService {
      */
     @Headers("Authorization: ${BuildConfig.API_KEY}")
     @GET("places/nearby")
-    suspend fun getVenueRecommendationPlaces(@QueryMap query: Map<String, String>): NetworkResult<PlacesReponse>
+    suspend fun getVenueRecommendationPlaces(@QueryMap query: Map<String, String>): NetworkResult<PlacesResponse>
 
     companion object {
         private val retrofit by lazy {

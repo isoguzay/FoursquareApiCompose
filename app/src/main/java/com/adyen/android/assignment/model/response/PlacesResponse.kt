@@ -1,5 +1,5 @@
 package com.adyen.android.assignment.model.response
 
-data class PlacesReponse(
+data class PlacesResponse(
     var results: List<Result>?
 )
