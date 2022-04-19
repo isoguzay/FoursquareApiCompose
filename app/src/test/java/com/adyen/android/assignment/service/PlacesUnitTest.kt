@@ -1,4 +1,4 @@
-package com.adyen.android.assignment
+package com.adyen.android.assignment.service
 
 import com.adyen.android.assignment.network.querybuilder.VenueRecommendationsQueryBuilder
 import com.adyen.android.assignment.network.service.PlacesService
