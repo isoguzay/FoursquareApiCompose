@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="place_info_card_vertical_padding">4dp</dimen>
+    <dimen name="place_info_card_horizontal_padding">8dp</dimen>
+    <dimen name="place_info_row_padding">8dp</dimen>
+    <dimen name="place_info_spacer">16dp</dimen>
+    <dimen name="place_info_category_spacer">8dp</dimen>
+    <dimen name="place_info_column_padding">16dp</dimen>
+    <dimen name="location_permission_screen_spacer">8dp</dimen>
+    <dimen name="location_permission_screen_horizontal_padding">16dp</dimen>
+    <dimen name="home_screen_show_my_current_location_box_padding">16dp</dimen>
+    <dimen name="place_info_categories_text_size">16sp</dimen>
+    <dimen name="category_chip_padding_vertical">2dp</dimen>
+    <dimen name="category_chip_padding_horizontal">4dp</dimen>
+    <dimen name="category_chip_border_width">1dp</dimen>
+    <dimen name="category_chip_border_corner_shape">16dp</dimen>
+    <dimen name="category_chip_text_padding">4dp</dimen>
+    <dimen name="category_chip_text_size">14sp</dimen>
+    <dimen name="category_chip_padding">4dp</dimen>
+</resources>

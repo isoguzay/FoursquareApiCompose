@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Android Assignment</string>
+    <string name="app_name">Adyen Android Assignment</string>
+    <string name="get_location_permission_from_settings_text">Application needs location permission, please go to settings then give location permission</string>
+    <string name="get_location_permission_from_settings_button_text">Open Settings</string>
+    <string name="get_location_permission_from_dialog_text">Application needs location permission, please give location permission</string>
+    <string name="get_location_permission_from_dialog_button_text">Allow Location Permission</string>
+    <string name="home_screen_show_my_current_location_button_text">My Location</string>
+    <string name="home_screen_show_my_current_location_button_content_description">Show My Location</string>
+    <string name="home_screen_place_detail_expand_content_description">Expand</string>
+    <string name="home_screen_place_detail_close_content_description">Close</string>
+    <string name="home_screen_place_detail_name_content_description">Place Name</string>
+    <string name="home_screen_place_detail_name">Name :</string>
+    <string name="home_screen_place_detail_address_content_description">Place Address</string>
+    <string name="home_screen_place_detail_address">Address :</string>
+    <string name="home_screen_place_detail_categories">Categories</string>
+    <string name="home_screen_place_detail_categories_content_description">Place Categories</string>
 </resources>
