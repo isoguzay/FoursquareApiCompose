@@ -1,12 +1,8 @@
 package com.adyen.android.assignment.screens.permission.screen
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -15,16 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.adyen.android.assignment.BuildConfig
 import com.adyen.android.assignment.R
 import com.adyen.android.assignment.screens.permission.types.LocationPermissionTypes
 import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
 import com.adyen.android.assignment.ui.components.CustomImageFromResource
-import com.adyen.android.assignment.utils.Constant.REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
+import com.adyen.android.assignment.utils.openAppPermissionSettings
+import com.adyen.android.assignment.utils.openPermissionDialog
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -32,7 +28,7 @@ fun LocationPermissionScreen(permissionViewModel: PermissionViewModel = hiltView
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.location_permission_screen_horizontal_padding)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -58,16 +54,14 @@ fun GetPermissionDialogAgain(
         image = R.drawable.ic_places_splash_logo
     )
     Text(
-        text = "Application needs location permission, please give location permission",
+        text = stringResource(id = R.string.get_location_permission_from_dialog_text),
         textAlign = TextAlign.Center
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.location_permission_screen_spacer)))
     Button(onClick = {
-        val permission = Manifest.permission.ACCESS_FINE_LOCATION
-        val requestCode = REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
-        requestPermissions(activity, arrayOf(permission), requestCode)
+        openPermissionDialog(activity)
     }) {
-        Text("Permission")
+        Text(text = stringResource(id = R.string.get_location_permission_from_dialog_button_text))
     }
 }
 
@@ -80,28 +74,17 @@ fun GetPermissionFromSettings(
         image = R.drawable.ic_places_splash_logo
     )
     Text(
-        text = "Application needs location permission, please go to settings then give location permission",
+        text = stringResource(id = R.string.get_location_permission_from_settings_text),
         textAlign = TextAlign.Center
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.location_permission_screen_spacer)))
     Button(onClick = {
         openAppPermissionSettings(
             context = context
         )
     }) {
-        Text("Go to Settings")
+        Text(stringResource(id = R.string.get_location_permission_from_settings_button_text))
     }
 }
 
-fun openAppPermissionSettings(context: Context) {
-    val intent = Intent()
-    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-    val uri = Uri.fromParts(
-        "package",
-        BuildConfig.APPLICATION_ID,
-        null
-    )
-    intent.data = uri
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    context.startActivity(intent)
-}
+

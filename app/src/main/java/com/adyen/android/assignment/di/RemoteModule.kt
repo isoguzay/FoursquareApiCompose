@@ -4,6 +4,7 @@ import android.content.Context
 import com.adyen.android.assignment.BuildConfig
 import com.adyen.android.assignment.network.service.PlacesService
 import com.adyen.android.assignment.network.util.AppCallAdapterFactory
+import com.adyen.android.assignment.utils.Constant.NETWORK_REQUEST_TIME_OUT
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -39,8 +40,8 @@ object RemoteModule {
             interceptorDebug.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(NETWORK_REQUEST_TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(NETWORK_REQUEST_TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
                 val request = chain.request()
                     .newBuilder()

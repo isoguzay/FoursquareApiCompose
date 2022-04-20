@@ -5,11 +5,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -17,18 +14,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.adyen.android.assignment.R
 import com.adyen.android.assignment.model.response.Category
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.screens.home.viewmodel.HomeViewModel
-import com.adyen.android.assignment.screens.permission.screen.LocationPermissionScreen
-import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
+import com.adyen.android.assignment.ui.components.CategoryChip
 import com.adyen.android.assignment.utils.Constant.GOOGLE_MAPS_CAMERA_ZOOM
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -41,27 +35,20 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun HomeScreen(
     locationRequestOnClick: () -> Unit,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    permissionViewModel: PermissionViewModel = hiltViewModel()
 ) {
-    val venuesListState = homeViewModel.venuesListState
-
     val showProgress = remember { mutableStateOf(false) }
     val showInfo = remember { mutableStateOf(false) }
-    val selectedPlaceState = homeViewModel.selectedPlace.observeAsState()
-    val permissionsState = permissionViewModel.locationPermission.observeAsState()
-    val currentLocation = homeViewModel.currentLocation.observeAsState()
     val cameraPositionState = rememberCameraPositionState {}
+    val venuesListState = homeViewModel.venuesListState
+    val selectedPlaceState = homeViewModel.selectedPlace.observeAsState()
+    val currentLocation = homeViewModel.currentLocation.observeAsState()
 
-    if (permissionsState.value == true) {
-        LaunchedEffect(Unit) {
-            homeViewModel.getPlaces(homeViewModel.getDummyLocationRequest())
-            cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                homeViewModel.getDummyAmsterdamLocation(),
-                GOOGLE_MAPS_CAMERA_ZOOM
-            )
-        }
-    } else {
-        LocationPermissionScreen()
+    LaunchedEffect(Unit) {
+        homeViewModel.getPlaces(homeViewModel.getDummyLocationRequest())
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+            homeViewModel.getDummyAmsterdamLocation(),
+            GOOGLE_MAPS_CAMERA_ZOOM
+        )
     }
 
     if (venuesListState.venueList?.isNotEmpty() == true) {
@@ -89,7 +76,7 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 16.dp),
+                .padding(all = dimensionResource(id = R.dimen.home_screen_show_my_current_location_box_padding)),
             contentAlignment = Alignment.BottomStart
         ) {
             Button(modifier = Modifier
@@ -100,9 +87,9 @@ fun HomeScreen(
                 }) {
                 Icon(
                     Icons.Default.Place,
-                    contentDescription = "Show My Location"
+                    contentDescription = stringResource(id = R.string.home_screen_show_my_current_location_button_content_description)
                 )
-                Text(text = "My Location")
+                Text(text = stringResource(id = R.string.home_screen_show_my_current_location_button_text))
             }
         }
     }
@@ -146,7 +133,6 @@ fun HomeScreen(
             SelectedPlaceInfo(showInfo, place)
         }
     }
-
 }
 
 @Composable
@@ -191,13 +177,13 @@ fun SelectedPlaceInfo(showInfo: MutableState<Boolean>, place: Result) {
                                 IconButton(onClick = { expanded = !expanded }) {
                                     Icon(
                                         imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                                        contentDescription = ""
+                                        contentDescription = stringResource(id = R.string.home_screen_place_detail_expand_content_description)
                                     )
                                 }
                                 IconButton(onClick = { showInfo.value = false }) {
                                     Icon(
                                         imageVector = Icons.Filled.Close,
-                                        contentDescription = ""
+                                        contentDescription = stringResource(id = R.string.home_screen_place_detail_close_content_description)
                                     )
                                 }
                             }
@@ -218,10 +204,10 @@ fun SelectedPlaceNameField(name: String?) {
     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
     Icon(
         Icons.Default.Business,
-        contentDescription = ""
+        contentDescription = stringResource(id = R.string.home_screen_place_detail_name_content_description)
     )
     Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
-    Text(text = "Name : $name")
+    Text(text = stringResource(id = R.string.home_screen_place_detail_name) + " $name")
 }
 
 @Composable
@@ -230,10 +216,10 @@ fun SelectedPlaceAddressField(formatted_address: String?) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Icon(
                 Icons.Default.Place,
-                contentDescription = ""
+                contentDescription = stringResource(id = R.string.home_screen_place_detail_address_content_description)
             )
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
-            Text(text = "Address : $formatted_address")
+            Text(text = stringResource(id = R.string.home_screen_place_detail_address) + " $formatted_address")
         }
     }
 }
@@ -245,12 +231,12 @@ fun SelectedPlaceCategoriesField(categoryList: List<Category>?) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Icon(
                 Icons.Filled.Storefront,
-                contentDescription = ""
+                contentDescription = stringResource(id = R.string.home_screen_place_detail_categories_content_description)
             )
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.place_info_spacer)))
             Text(
-                text = "Categories",
-                fontSize = 16.sp
+                text = stringResource(id = R.string.home_screen_place_detail_categories),
+                fontSize = dimensionResource(id = R.dimen.place_info_categories_text_size).value.sp
             )
         }
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.place_info_spacer)))
@@ -266,36 +252,6 @@ fun SelectedPlaceCategoriesField(categoryList: List<Category>?) {
     }
 }
 
-@Composable
-fun CategoryChip(
-    categoryName: String
-) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(
-                vertical = 2.dp,
-                horizontal = 4.dp
-            )
-            .border(
-                width = 1.dp,
-                color = Color.White,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .background(
-                color = Color.Transparent,
-            )
-            .padding(4.dp)
-    ) {
-        Text(
-            text = categoryName,
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            modifier = Modifier.padding(4.dp)
-        )
-    }
-}
 
 
 

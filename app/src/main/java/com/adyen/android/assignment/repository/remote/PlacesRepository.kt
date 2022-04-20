@@ -8,6 +8,10 @@ import javax.inject.Inject
 
 class PlacesRepository @Inject constructor(private val remote: PlacesRemoteData) {
 
+    /**
+     * Get places from service
+     * @param requestModel
+     */
     suspend fun getPlaces(requestModel: LocationRequestModel): NetworkResult<PlacesResponse> {
         return remote.getPlaces(requestModel)
     }

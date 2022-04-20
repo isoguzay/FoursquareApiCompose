@@ -15,6 +15,10 @@ class PermissionViewModel @Inject constructor() : ViewModel() {
 
     var locationPermissionState = mutableStateOf(LocationPermissionTypes.REQUEST_AGAIN)
 
+    /**
+     * Set location permission state
+     * @param state, true value for granted state
+     */
     fun setLocationPermissionState(state: Boolean) {
         mLocationPermission.postValue(state)
     }
