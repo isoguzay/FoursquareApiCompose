@@ -11,7 +11,7 @@ import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
 import com.adyen.android.assignment.repository.FakePlacesRepository
-import com.adyen.android.assignment.screens.home.viewmodel.VenuesListState
+import com.adyen.android.assignment.screens.home.state.VenuesListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

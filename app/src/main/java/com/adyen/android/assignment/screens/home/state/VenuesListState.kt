@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.screens.home.viewmodel
+package com.adyen.android.assignment.screens.home.state
 
 import com.adyen.android.assignment.model.response.Result
 
