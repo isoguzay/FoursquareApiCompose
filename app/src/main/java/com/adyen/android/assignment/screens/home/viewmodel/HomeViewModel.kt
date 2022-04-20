@@ -10,7 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
-import com.adyen.android.assignment.repository.remote.PlacesRepository
+import com.adyen.android.assignment.screens.home.state.VenuesListState
+import com.adyen.android.assignment.usecase.GetPlacesImpl
 import com.adyen.android.assignment.utils.Constant
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepository) :
+class HomeViewModel @Inject constructor(private val getPlaces: GetPlacesImpl) :
     ViewModel() {
 
     var venuesListState by mutableStateOf(VenuesListState())
@@ -37,7 +38,7 @@ class HomeViewModel @Inject constructor(private val placesRepository: PlacesRepo
      */
     fun getPlaces(requestModel: LocationRequestModel) = viewModelScope.launch {
         venuesListState = venuesListState.copy(isLoading = true)
-        when (val placesResponse = placesRepository.getPlaces(requestModel = requestModel)) {
+        when (val placesResponse = getPlaces.invoke(requestModel = requestModel)) {
             is NetworkResult.Success -> {
                 placesResponse.data?.results?.let { venueList ->
                     venuesListState = venuesListState.copy(
