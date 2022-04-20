@@ -83,17 +83,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * cancel the cancellationTokenSource onDestroy
+     */
     override fun onDestroy() {
         super.onDestroy()
         cancellationTokenSource.cancel()
     }
 
+    /**
+     * check location permissions granted onStart
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStart() {
         super.onStart()
         getPermission()
     }
 
+    /**
+     * request permission result
+     */
     @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -115,6 +124,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * get location permission, if permissionState true request it again
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     fun getPermission() {
         val permissionState = requestPermissionWithRationale(
@@ -126,6 +138,9 @@ class MainActivity : ComponentActivity() {
                 LocationPermissionTypes.REQUEST_AGAIN
     }
 
+    /**
+     * request current location, check the location permissions approved state
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     fun locationRequestOnClick() {
         Timber.d("locationRequestOnClick()")
@@ -139,6 +154,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * request current location from location api
+     */
     @SuppressLint("MissingPermission")
     private fun requestCurrentLocation() {
         if (applicationContext.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -165,8 +183,5 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
+    
 }
