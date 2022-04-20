@@ -1,12 +1,14 @@
 # Adyen Android Assignment - Ismail Oguzhan Ay
 
+# 📍 Foursquare Places API - Android Application
+
 ![Latest Version](https://img.shields.io/badge/latestVersion-1.0-yellow) ![Kotlin](https://img.shields.io/badge/language-kotlin-blue) ![Minimum SDK Version](https://img.shields.io/badge/minSDK-21-orange) ![Android Gradle Version](https://img.shields.io/badge/androidGradleVersion-7.1.1-green) ![Gradle Version](https://img.shields.io/badge/gradleVersion-7.0.4-informational)
 
-An android assignment project with Jetpack Compose, Coroutines, ViewModel, LiveData, Retrofit, Hilt and based on MVVM by using FourSquare Place API and Google Maps Compose.
+An android assignment project with Jetpack Compose, Coroutines, ViewModel, LiveData, Retrofit, Hilt and based on MVVM by using Foursquare Places API and Google Maps Compose.
 
 ## ℹ Introduction
 
-It is about a demonstration application with FourSquare Place API. You get places(venues) information from FourSquare Place API service, then shows them on Google Maps. When you click on a place(marker on map), get details about the place. It starts with Adyen location, if you want see your current location places, you can click my location button and get them.
+It is about a demonstration application with Foursquare Places API. You get places(venues) information from Foursquare Places API service, then shows them on Google Maps. When you click on a place(marker on map), get details about the place. It starts with Adyen location, if you want see your current location places, you can click my location button and get them.
 
 ## What You Will Need
 
@@ -61,7 +63,7 @@ Go to the [Releases](https://github.com/isoguzay/FoursquareApiCompose/releases) 
 
 - Minimum SDK level 21 + based on [Kotlin](https://kotlinlang.org/)
 
-- [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) & [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) - Perform asynchronous operations
+- [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Perform asynchronous operations
 
 - [Hilt](https://dagger.dev/hilt/) - for dependency injection
 
@@ -76,7 +78,7 @@ Go to the [Releases](https://github.com/isoguzay/FoursquareApiCompose/releases) 
 
 ### Services
 
-- [FourSquare API Service](https://developer.foursquare.com/docs/places-api-getting-started) - FourSquare API 🗺📍
+- [Foursquare API Service](https://developer.foursquare.com/docs/places-api-getting-started) - FourSquare Places API 🗺📍
 - [Google Maps Compose](https://developers.google.com/maps/documentation/android-sdk/maps-compose) - Google Maps with Jetpack Compose 🌍
 
 ## 📍 How to get the Foursquare API key?
@@ -87,11 +89,11 @@ Register [here](https://developer.foursquare.com/docs/manage-api-keys) and get y
 
 Register [here](https://developers.google.com/maps/documentation/android-sdk/maps-compose) and get your own Google Maps API key for your builds. You should add your API key to as a meta-data under the AndroidManifest.xml file.
 
+# 💳 Cash Register App
 
+Implement logic of cash register module. It gets two parameters with price and amountPaid. Cash register also has change values. The arithmetic operation calculate the minimal result of change operation. 
 
-# 💳 Cash Register
-
-
+For more information, please check test cases.
 
 # Adyen Android Assignment - Requirements
 
