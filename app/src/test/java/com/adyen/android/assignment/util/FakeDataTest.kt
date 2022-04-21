@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.utils
+package com.adyen.android.assignment.util
 
 import android.content.res.Resources
 import com.adyen.android.assignment.model.request.LocationRequestModel

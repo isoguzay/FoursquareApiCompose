@@ -122,6 +122,49 @@ class CashRegisterTest {
     }
 
     @Test
+    fun verify_cash_register_should_tracks_change_expected() {
+        val cashRegisterChange = Change().apply {
+            Bill.values().forEach { add(it, 2) }
+            Coin.values().forEach { add(it, 2) }
+        }
+        val cashRegister = CashRegister(cashRegisterChange)
+
+        val firstPrice = 640L // amountPaid 650 = -10
+
+        val firstAmountPaid = Change().apply {
+            add(Bill.FIVE_EURO, 1) // 500
+            add(Coin.ONE_EURO, 1) // 100
+            add(Coin.FIFTY_CENT, 1) // 50
+        }
+
+        val secondPrice = 1550L // amountPaid 1600 = -50
+
+        val secondAmountPaid = Change().apply {
+            add(Bill.TEN_EURO, 1) // 1000
+            add(Bill.FIVE_EURO, 1) // 500
+            add(Coin.ONE_EURO, 1) // 100
+        }
+
+        val expectedChange = Change().apply {
+            Bill.values().forEach { add(it, 2) }
+            Coin.values().forEach { add(it, 2) }
+            add(Bill.FIVE_EURO, 1)
+            add(Coin.ONE_EURO, 1)
+            add(Coin.FIFTY_CENT, 1)
+            add(Bill.TEN_EURO, 1)
+            add(Bill.FIVE_EURO, 1)
+            add(Coin.ONE_EURO, 1)
+            remove(Coin.TEN_CENT, 1)
+            remove(Coin.FIFTY_CENT, 1)
+        }
+
+        cashRegister.performTransaction(firstPrice, firstAmountPaid)
+        cashRegister.performTransaction(secondPrice, secondAmountPaid)
+
+        Assert.assertEquals(expectedChange, cashRegisterChange)
+    }
+
+    @Test
     fun verify_cash_register_pay_back_price_to_shopper_money_to_expected() {
         val cashRegisterChange = Change().apply {
             Bill.values().forEach { add(it, 2) }
@@ -149,16 +192,16 @@ class CashRegisterTest {
     @Test(expected = CashRegister.TransactionException::class)
     fun verify_cash_register_does_not_have_enough_change_should_give_exception() {
         val cashRegisterTotal = Change().apply {
-            Coin.values().forEach { add(it, 1) }
+            Bill.values().forEach { add(it, 1) }
         }
         val cashRegister = CashRegister(cashRegisterTotal)
 
-        val price = 6199L
+        val price = 640L // amountPaid 650 = -10
 
         val amountPaid = Change().apply {
-            add(Bill.FIFTY_EURO, 1) // 5000
-            add(Bill.FIVE_EURO, 3) // 1500
-            add(Coin.TWO_EURO, 2) // 400
+            add(Bill.FIVE_EURO, 1) // 500
+            add(Coin.ONE_EURO, 1) // 100
+            add(Coin.FIFTY_CENT, 1) // 50
         }
 
         cashRegister.performTransaction(price, amountPaid)

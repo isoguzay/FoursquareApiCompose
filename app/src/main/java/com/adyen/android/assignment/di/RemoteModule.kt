@@ -4,7 +4,7 @@ import android.content.Context
 import com.adyen.android.assignment.BuildConfig
 import com.adyen.android.assignment.network.service.PlacesService
 import com.adyen.android.assignment.network.util.AppCallAdapterFactory
-import com.adyen.android.assignment.utils.Constant.NETWORK_REQUEST_TIME_OUT
+import com.adyen.android.assignment.util.Constant.NETWORK_REQUEST_TIME_OUT
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module

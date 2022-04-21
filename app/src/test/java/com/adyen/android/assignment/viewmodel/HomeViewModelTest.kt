@@ -2,10 +2,10 @@ package com.adyen.android.assignment.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.adyen.android.assignment.repository.FakePlacesRepository
-import com.adyen.android.assignment.utils.CoroutinesTestRule
-import com.adyen.android.assignment.utils.FakeDataTest
-import com.adyen.android.assignment.utils.FakeDataTest.getDummyLocationRequest
-import com.adyen.android.assignment.utils.getOrAwaitValueTest
+import com.adyen.android.assignment.util.CoroutinesTestRule
+import com.adyen.android.assignment.util.FakeDataTest
+import com.adyen.android.assignment.util.FakeDataTest.getDummyLocationRequest
+import com.adyen.android.assignment.util.getOrAwaitValueTest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before

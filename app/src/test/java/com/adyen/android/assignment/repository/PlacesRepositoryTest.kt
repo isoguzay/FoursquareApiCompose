@@ -2,7 +2,7 @@ package com.adyen.android.assignment.repository
 
 import com.adyen.android.assignment.model.response.PlacesResponse
 import com.adyen.android.assignment.network.util.NetworkResult
-import com.adyen.android.assignment.utils.FakeDataTest.getDummyLocationRequest
+import com.adyen.android.assignment.util.FakeDataTest.getDummyLocationRequest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

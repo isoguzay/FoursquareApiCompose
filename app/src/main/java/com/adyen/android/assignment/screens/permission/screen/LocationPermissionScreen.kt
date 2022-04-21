@@ -19,8 +19,8 @@ import com.adyen.android.assignment.R
 import com.adyen.android.assignment.screens.permission.types.LocationPermissionTypes
 import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
 import com.adyen.android.assignment.ui.components.CustomImageFromResource
-import com.adyen.android.assignment.utils.openAppPermissionSettings
-import com.adyen.android.assignment.utils.openPermissionDialog
+import com.adyen.android.assignment.util.openAppPermissionSettings
+import com.adyen.android.assignment.util.openPermissionDialog
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable

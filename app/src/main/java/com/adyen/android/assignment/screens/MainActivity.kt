@@ -24,9 +24,9 @@ import com.adyen.android.assignment.screens.permission.screen.LocationPermission
 import com.adyen.android.assignment.screens.permission.types.LocationPermissionTypes
 import com.adyen.android.assignment.screens.permission.viewmodel.PermissionViewModel
 import com.adyen.android.assignment.ui.theme.AdyenApplicationTheme
-import com.adyen.android.assignment.utils.Constant.REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
-import com.adyen.android.assignment.utils.hasPermission
-import com.adyen.android.assignment.utils.requestPermissionWithRationale
+import com.adyen.android.assignment.util.Constant.REQUEST_FINE_LOCATION_PERMISSIONS_REQUEST_CODE
+import com.adyen.android.assignment.util.hasPermission
+import com.adyen.android.assignment.util.requestPermissionWithRationale
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices

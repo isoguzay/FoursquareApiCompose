@@ -11,15 +11,15 @@ import com.adyen.android.assignment.model.request.LocationRequestModel
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.network.util.NetworkResult
 import com.adyen.android.assignment.screens.home.state.VenuesListState
-import com.adyen.android.assignment.usecase.GetPlacesImpl
-import com.adyen.android.assignment.utils.Constant
+import com.adyen.android.assignment.usecase.GetPlaces
+import com.adyen.android.assignment.util.Constant
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getPlaces: GetPlacesImpl) :
+class HomeViewModel @Inject constructor(private val getPlaces: GetPlaces) :
     ViewModel() {
 
     var venuesListState by mutableStateOf(VenuesListState())
