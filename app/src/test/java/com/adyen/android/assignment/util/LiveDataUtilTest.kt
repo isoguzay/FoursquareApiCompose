@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.utils
+package com.adyen.android.assignment.util
 
 /*
  * Copyright (C) 2019 The Android Open Source Project

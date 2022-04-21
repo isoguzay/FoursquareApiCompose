@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.utils
+package com.adyen.android.assignment.util
 
 object Constant {
 
