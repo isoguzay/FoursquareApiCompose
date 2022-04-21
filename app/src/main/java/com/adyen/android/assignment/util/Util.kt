@@ -1,4 +1,4 @@
-package com.adyen.android.assignment.utils
+package com.adyen.android.assignment.util
 
 import android.Manifest
 import android.app.Activity
@@ -12,6 +12,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.adyen.android.assignment.BuildConfig
 
+/**
+ * check hasPermission extension function
+ */
 fun Context.hasPermission(permission: String): Boolean {
     if (permission == Manifest.permission.ACCESS_BACKGROUND_LOCATION &&
         Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
@@ -22,6 +25,9 @@ fun Context.hasPermission(permission: String): Boolean {
             PackageManager.PERMISSION_GRANTED
 }
 
+/**
+ * requestPermissionWithRationale extension function
+ */
 @RequiresApi(Build.VERSION_CODES.M)
 fun Activity.requestPermissionWithRationale(
     permission: String,

@@ -23,7 +23,7 @@ import com.adyen.android.assignment.model.response.Category
 import com.adyen.android.assignment.model.response.Result
 import com.adyen.android.assignment.screens.home.viewmodel.HomeViewModel
 import com.adyen.android.assignment.ui.components.CategoryChip
-import com.adyen.android.assignment.utils.Constant.GOOGLE_MAPS_CAMERA_ZOOM
+import com.adyen.android.assignment.util.Constant.GOOGLE_MAPS_CAMERA_ZOOM
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
