@@ -21,37 +21,45 @@ class CashRegister(private val change: Change) {
      */
     fun performTransaction(price: Long, amountPaid: Change): Change {
         return if (amountPaid.total >= price) {
-            var moneyRefund = amountPaid.total - price
-            if (moneyRefund == 0L) return Change.none()
-            else {
-                addAmountPaidToCashRegister(amountPaid)
-                val changeResult = Change()
-                val availableMonetaryElements = change.getElements()
-                var index = change.getElements().size - 1
-
-                while (moneyRefund != 0L && 0 <= index) {
-                    val currentMoney = availableMonetaryElements.elementAt(index)
-                    var currentMoneyIndex = change.getCount(currentMoney)
-
-                    while (0 < currentMoneyIndex) {
-                        val moneyCount = moneyRefund.toDouble() / currentMoney.minorValue.toDouble()
-
-                        if (moneyCount >= 1) {
-                            val withdrawMoneyCount = min(moneyCount.toInt(), change.getCount(currentMoney))
-                            changeResult.add(currentMoney, withdrawMoneyCount)
-                            change.remove(currentMoney, withdrawMoneyCount)
-                            moneyRefund -= withdrawMoneyCount * currentMoney.minorValue
-                        }
-                        currentMoneyIndex--
-                    }
-                    index--
-                }
-
-                if (moneyRefund == 0L) return changeResult
-                else throw TransactionException("The Cash register has not enough change")
-            }
+            calculateChangeTransaction(price, amountPaid)
         } else {
             throw TransactionException("Shopper should pay more than product price!")
+        }
+    }
+
+    /**
+     * Calculate cash register change transaction
+     */
+    private fun calculateChangeTransaction(price: Long, amountPaid: Change): Change {
+        var moneyRefund = amountPaid.total - price
+        if (moneyRefund == 0L) return Change.none()
+        else {
+            addAmountPaidToCashRegister(amountPaid)
+            val changeResult = Change()
+            val availableMonetaryElements = change.getElements()
+            var index = change.getElements().size - 1
+
+            while (moneyRefund != 0L && 0 <= index) {
+                val currentMoney = availableMonetaryElements.elementAt(index)
+                var currentMoneyIndex = change.getCount(currentMoney)
+
+                while (0 < currentMoneyIndex) {
+                    val moneyCount = moneyRefund.toDouble() / currentMoney.minorValue.toDouble()
+
+                    if (moneyCount >= 1) {
+                        val withdrawMoneyCount =
+                            min(moneyCount.toInt(), change.getCount(currentMoney))
+                        changeResult.add(currentMoney, withdrawMoneyCount)
+                        change.remove(currentMoney, withdrawMoneyCount)
+                        moneyRefund -= withdrawMoneyCount * currentMoney.minorValue
+                    }
+                    currentMoneyIndex--
+                }
+                index--
+            }
+
+            if (moneyRefund == 0L) return changeResult
+            else throw TransactionException("The Cash register has not enough change")
         }
     }
 
